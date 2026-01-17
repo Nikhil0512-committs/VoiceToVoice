@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NyaySaathi Voice Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+  body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  
+}
+
+.container {
+  background: white;
+  padding: 36px 28px;
+  border-radius: 16px;
+  width: 380px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Title */
+.bgg {
+  color: rgba(79,70,229,1);
+  animation: pulse 2s ease-in-out infinite;
+  margin-bottom: 4px;
+}
+
+/* Subtitle */
+.title {
+  color: black;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight:bold;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-color: #4f46e5;
+  color: white;
+  transition: background-color 0.3s ease,
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+button:hover {
+  background-color: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(79,70,229,0.35);
+}
+
+button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+button:disabled:hover {
+  background-color: #9ca3af;
+}
+
+/* Status text */
+.status {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #475569;
+  min-height: 18px;
+}
+
+/* Audio player */
+audio {
+  margin-top: 16px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="bgg">🎙️ NyaySaathi</h2>
+  <p class="title">Speak your issue</p>
+
+  <button id="startBtn" >Start Recording</button>
+  <button id="stopBtn" disabled>Stop</button>
+
+  <div class="status" id="status">Idle</div>
+
+  <audio id="audioPlayer" controls style="margin-top:15px; width:100%"></audio>
+</div>
+
+<script src="./script.js"></script>
+</body>
+</html>

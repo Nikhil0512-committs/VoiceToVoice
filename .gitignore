@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Google Cloud service account (CRITICAL)
+serviceAccount.json
+
+# Uploads / generated media
+uploads/
+*.mp3
+*.wav
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Package lock (OPTIONAL – usually keep it)
+# package-lock.json
