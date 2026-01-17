@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
   res.status(200).json({
     status: "OK",
     message: "Backend is live 🚀",
-  });
+  }); 
 });
 
 const googleCredentials = JSON.parse(
