@@ -91,7 +91,7 @@ async function sendAudioToServer() {
   formData.append("memory", JSON.stringify(memory));
 
   try {
-    const response = await fetch("http://localhost:3000/api/voice", {
+    const response = await fetch("https://voicetovoice-oyay.onrender.com/", {
       method: "POST",
       body: formData,
     });

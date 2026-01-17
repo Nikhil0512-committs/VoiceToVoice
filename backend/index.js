@@ -19,6 +19,12 @@ app.use(cors({
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 }));
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Backend is live 🚀",
+  });
+});
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
