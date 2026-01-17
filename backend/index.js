@@ -3,15 +3,19 @@ const cors = require("cors");
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
+const PORT = process.env.PORT || 3000
 
 const textToSpeech = require("@google-cloud/text-to-speech");
 const speech = require("@google-cloud/speech").v1;
-const sttClient = new speech.SpeechClient();
+
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "/tmp/uploads/" });
+if (!fs.existsSync("/tmp/uploads")) {
+  fs.mkdirSync("/tmp/uploads", { recursive: true });
+}
 
 app.use(express.json());
 app.use(cors({
@@ -26,7 +30,21 @@ app.get("/", (req, res) => {
   });
 });
 
-const ttsClient = new textToSpeech.TextToSpeechClient();
+const googleCredentials = JSON.parse(
+  process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+);
+
+
+const ttsClient = new textToSpeech.TextToSpeechClient({
+  credentials: googleCredentials,
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+});
+
+const sttClient = new speech.SpeechClient({
+  credentials: googleCredentials,
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+});
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 
@@ -193,11 +211,13 @@ app.post("/api/voice", upload.single("audio"), async (req, res) => {
 
     const sttResult = await speechToText(audioPath);
 
-    const aiReply = await chatWithAI(
-      sttResult.text,
-      sttResult.lang,
-      memory
-    );
+    const aiReply = await Promise.race([
+    chatWithAI(sttResult.text, sttResult.lang, memory),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("AI timeout")), 25000)
+    )
+    ]);
+
 
     const audioBuffer = await convertTextToMp3(
       aiReply,
@@ -221,6 +241,6 @@ app.post("/api/voice", upload.single("audio"), async (req, res) => {
 });
 
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server running on PORT ${PORT}`);
 });
